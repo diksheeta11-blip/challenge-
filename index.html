@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness & Health Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eaeaea; /* light grey */
+      color: #333;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .search-container {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .search-container input {
+      padding: 8px;
+      width: 60%;
+      border-radius: 6px 0 0 6px;
+      border: none;
+      outline: none;
+    }
+    .search-container button {
+      padding: 9px 12px;
+      background: #27ae60;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+    }
+    .search-container button i {
+      color: white;
+      font-size: 16px;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card h3 {
+      margin: 10px 0 5px;
+    }
+    .card p {
+      font-size: 14px;
+      color: #555;
+    }
+    canvas {
+      width: 100% !important;
+      max-height: 250px;
+      margin-top: 10px;
+    }
+    .flowchart {
+      background: white;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .flowchart h2 {
+      text-align: center;
+    }
+    .flowchart img {
+      display: block;
+      margin: auto;
+      max-width: 100%;
+    }
+  </style>
+  <!-- Font Awesome for Search Icon -->
+  <script src="https://kit.fontawesome.com/6dcf5c1f6c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Fitness & Health Dashboard</h1>
+    <p>Track your health, progress, and goals</p>
+    <div class="search-container">
+      <input type="text" id="searchBar" placeholder="Search for fitness info...">
+      <button id="searchBtn"><i class="fas fa-search"></i></button>
+    </div>
+  </header>
+
+  <div class="dashboard" id="cardContainer">
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3757376/pexels-photo-3757376.jpeg" alt="Steps">
+      <h3>Daily Steps</h3>
+      <p>Walking improves stamina, helps burn calories, and boosts mood.</p>
+      <canvas id="stepsChart"></canvas>
+    </div>
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg" alt="Calories">
+      <h3>Calories Burned</h3>
+      <p>Tracking calories burned helps maintain weight and energy balance.</p>
+      <canvas id="caloriesChart"></canvas>
+    </div>
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg" alt="Heart">
+      <h3>Heart Rate</h3>
+      <p>A healthy heart rate shows cardiovascular fitness and energy levels.</p>
+      <canvas id="heartChart"></canvas>
+    </div>
+
+    <div class="card">
+      <img src="https://images.pexels.com/photos/935743/pexels-photo-935743.jpeg" alt="Sleep">
+      <h3>Sleep Tracker</h3>
+      <p>Good sleep improves recovery, memory, and overall health.</p>
+      <canvas id="sleepChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Flowchart -->
+  <div class="flowchart">
+    <h2>Health Improvement Flowchart</h2>
+    <img src="https://miro.medium.com/v2/resize:fit:1200/1*0KD2QjzJULICwhf66A1VpA.png" alt="Flowchart">
+  </div>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Search Function (input or button click)
+    function searchCards() {
+      let query = document.getElementById("searchBar").value.toLowerCase();
+      let cards = document.querySelectorAll(".card");
+      cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? "block" : "none";
+      });
+    }
+    document.getElementById("searchBar").addEventListener("keyup", searchCards);
+    document.getElementById("searchBtn").addEventListener("click", searchCards);
+
+    // Steps Chart (Line chart like profit/loss)
+    new Chart(document.getElementById("stepsChart"), {
+      type: "line",
+      data: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [{
+          label: "Steps",
+          data: [8000, 9500, 7000, 11000, 12000, 9000, 10000],
+          borderColor: "#27ae60",
+          fill: false,
+          tension: 0.3
+        }]
+      }
+    });
+
+    // Calories Chart (Bar chart)
+    new Chart(document.getElementById("caloriesChart"), {
+      type: "bar",
+      data: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [{
+          label: "Calories Burned",
+          data: [400, 500, 600, 450, 700, 800, 650],
+          backgroundColor: "#e67e22"
+        }]
+      }
+    });
+
+    // Heart Rate Chart (Profit/Loss style)
+    new Chart(document.getElementById("heartChart"), {
+      type: "line",
+      data: {
+        labels: ["10AM","12PM","2PM","4PM","6PM","8PM"],
+        datasets: [{
+          label: "Heart Rate (bpm)",
+          data: [72, 85, 78, 95, 88, 76],
+          borderColor: "#c0392b",
+          fill: false,
+          tension: 0.3
+        }]
+      }
+    });
+
+    // Sleep Chart
+    new Chart(document.getElementById("sleepChart"), {
+      type: "bar",
+      data: {
+        labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        datasets: [{
+          label: "Hours Slept",
+          data: [6, 7, 5, 8, 6.5, 7.5, 8],
+          backgroundColor: "#2980b9"
+        }]
+      }
+    });
+  </script>
+
+</body>
+</html>
